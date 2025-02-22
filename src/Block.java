@@ -107,22 +107,23 @@ public class Block {
 
     private void generateVariants() {
         variants = new ArrayList<>();
-        Set<String> seen = new HashSet<>();
-
         char[][] current = shape;
-        for (int i = 0; i < 4; i++) {  // Memutar 90 deg 4 kali
+
+        // Rotasi 90 derajat sebanyak 4 kali
+        for (int i = 0; i < 4; i++) {  
             current = rotate(current);
-            if (seen.add(arrToString(current))) variants.add(current);
+            variants.add(current);
         }
 
-        // Flip horizontal
+        // Flip horizontal dan lakukan rotasi lagi
         current = flipHorizontal(shape);
-        if (seen.add(arrToString(current))) variants.add(current);
+        variants.add(current);
         for (int i = 0; i < 3; i++) {
             current = rotate(current);
-            if (seen.add(arrToString(current))) variants.add(current);
+            variants.add(current);
         }
     }
+
 
     private char[][] rotate(char[][] matrix) {
         int rows = matrix.length;
