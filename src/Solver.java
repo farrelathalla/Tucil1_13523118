@@ -3,7 +3,7 @@ import java.util.List;
 public class Solver {
     private char[][] board;
     private List<Block> blocks;
-    private int jumlahKasus = 0;
+    private long jumlahKasus = 0;
 
     public Solver(char[][] board, List<Block> blocks) {
         this.board = board;
