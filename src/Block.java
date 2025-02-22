@@ -57,7 +57,7 @@ public class Block {
         int cols = shape[0].length;
         boolean[][] visited = new boolean[rows][cols];
 
-        // Cari karakter pertama yang bukan ' '
+        // Cari kemunculan pertama label
         int startX = -1, startY = -1;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -70,9 +70,9 @@ public class Block {
             if (startX != -1) break;
         }
 
-        if (startX == -1) return false;
+        if (startX == -1) return false; // Blok tidak valid
 
-        // BFS ke semua X
+        // Algoritma BFS
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{startX, startY});
         visited[startX][startY] = true;
@@ -84,7 +84,11 @@ public class Block {
             }
         }
 
-        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        // Cek nyambung
+        int[][] directions = {
+                {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // Atas, bawah, kiri, kanan
+                {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Diagonal
+        };
 
         while (!queue.isEmpty()) {
             int[] curr = queue.poll();
@@ -149,14 +153,5 @@ public class Block {
             }
         }
         return flipped;
-    }
-
-    // Mengubah array menjadi string
-    private String arrToString(char[][] matrix) {
-        StringBuilder sb = new StringBuilder();
-        for (char[] row : matrix) {
-            sb.append(new String(row)).append(",");
-        }
-        return sb.toString();
     }
 }
