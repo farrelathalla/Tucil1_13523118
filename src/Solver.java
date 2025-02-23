@@ -12,9 +12,9 @@ public class Solver {
 
     public boolean solve() {
         long start = System.currentTimeMillis(); // Start waktu
-
+        transformBoard();
         // Algoritma Brute Force start dari index 0
-        if (bruteForce(0)) {
+        if (bruteForce(0) && isBoardFull()) {
             System.out.println("Solusi ditemukan:");
             printBoard();
             long end = System.currentTimeMillis();
@@ -66,8 +66,8 @@ public class Solver {
         for (int r = 0; r < shape.length; r++) {
             for (int c = 0; c < shape[0].length; c++) {
                 if (shape[r][c] != ' ') {
-                    // Block hanya dapat diletakkan pada 'X'
-                    if (board[row + r][col + c] != 'X') {
+                    // Block hanya dapat diletakkan pada '1'
+                    if (board[row + r][col + c] != '1') {
                         return false;
                     }
                 }
@@ -90,9 +90,9 @@ public class Solver {
     private void removeBlock(char[][] shape, int row, int col) {
         for (int r = 0; r < shape.length; r++) {
             for (int c = 0; c < shape[0].length; c++) {
-                // Mengganti papan dengan 'X'
+                // Mengganti papan dengan '1'
                 if (shape[r][c] != ' ') {
-                    board[row + r][col + c] = 'X';
+                    board[row + r][col + c] = '1';
                 }
             }
         }
@@ -131,7 +131,7 @@ public class Solver {
 
         for (char[] row : board) {
             for (char cell : row) {
-                if (cell == '.') {
+                if (cell == '0') {
                     System.out.print(" ");
                 } else {
                     int colorIndex = (Character.toUpperCase(cell) - 'A') % 26;
@@ -141,5 +141,30 @@ public class Solver {
             System.out.println();
         }
         System.out.println();
+    }
+
+    // Mengubah 'X' menjadi '1' dan '.' menjadi '0'
+    private void transformBoard() {
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (board[r][c] == 'X') {
+                    board[r][c] = '1';
+                } else {
+                    board[r][c] = '0';
+                }
+            }
+        }
+    }
+
+    // Cek apakah papan penuh
+    private boolean isBoardFull() {
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (board[r][c] == '1') {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

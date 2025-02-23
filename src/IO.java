@@ -1,9 +1,13 @@
+import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.File;
+import java.util.List;
 
 public class IO {
     public static List<Block> readFile(String filename, int[] ukuran, List<String> newPapan) throws IOException {
@@ -192,7 +196,7 @@ public class IO {
 
                     char label = findLabel(currentLine);
                     if (currentLabel == null || label != currentLabel) {
-                        // New block detected
+                        // Blok baru
                         if (currentLabel != null) {
                             blocks.add(new Block(currentLabel, currentBlock));
                             blockUsed.put(currentLabel, true);
@@ -244,31 +248,28 @@ public class IO {
     }
 
     public static void savePapanToTxt(char[][] board, String filename) {
-        File outputDir = new File("output");
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
-        }
-
-        File outputFile = new File(outputDir, filename);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (char[] row : board) {
                 StringBuilder rowString = new StringBuilder();
                 for (char cell : row) {
-                    rowString.append(cell == '.' ? " " : cell);
+                    if (cell == '0') {
+                        rowString.append(" ");
+                    } else {
+                        rowString.append(cell);
+                    }
                 }
                 writer.write(rowString.toString());
                 writer.newLine();
             }
-            System.out.println("Solusi tersimpan di: " + outputFile.getAbsolutePath());
+            System.out.println("Solusi " + filename + " berhasil tersimpan.");
         } catch (IOException e) {
             System.out.println("Gagal menyimpan solusi: " + e.getMessage());
         }
     }
 
-
     public static void savePapanToImage(char[][] board, String filename) {
         int cellSize = 50;
+        int fontSize = 30;
 
         int width = board[0].length * cellSize;
         int height = board.length * cellSize;
@@ -277,28 +278,38 @@ public class IO {
         Graphics2D g2d = image.createGraphics();
 
         // Menggambar papan
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 char cell = board[i][j];
-                Color color = getColorForBlock(cell);
 
+                // Memberi warna
+                Color color = getColorForBlock(cell);
                 g2d.setColor(color);
                 g2d.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+
+                // Tulis huruf
+                if (cell != '0' && cell != ' ') {
+                    g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
+                    g2d.setColor(Color.BLACK);
+
+                    FontMetrics fm = g2d.getFontMetrics();
+                    int textWidth = fm.stringWidth(String.valueOf(cell));
+                    int textHeight = fm.getAscent();
+
+                    int textX = j * cellSize + (cellSize - textWidth) / 2;
+                    int textY = i * cellSize + (cellSize + textHeight) / 2 - 5;
+
+                    g2d.drawString(String.valueOf(cell), textX, textY);
+                }
             }
         }
 
         g2d.dispose();
 
-        File outputDir = new File("output");
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
-        }
-
-        File outputFile = new File(outputDir, filename);
-
         try {
-            ImageIO.write(image, "PNG", outputFile);
-            System.out.println("Gambar solusi tersimpan di: " + outputFile.getAbsolutePath());
+            ImageIO.write(image, "PNG", new File(filename));
+            System.out.println("Solusi " + filename + " berhasil tersimpan.");
         } catch (IOException e) {
             System.out.println("Gagal menyimpan gambar: " + e.getMessage());
         }
