@@ -62,13 +62,14 @@ Pastikan anda sudah memiliki:
 ## **📌 Cara Penggunaan**
 
 1. **Jalankan program** melalui terminal atau IDE yang mendukung Java.
-2. **Masukkan nama file input**, misalnya: input.txt
-3. Program akan membaca dan memvalidasi format input serta mencoba menyelesaikan puzzle.
-4. Jika solusi ditemukan, hasil akan ditampilkan di terminal dengan warna sesuai setiap blok.
-5. Program akan menanyakan apakah solusi ingin disimpan sebagai:
+2. File input **harus** berada di dalam folder input dan output akan disimpan dalam folder output
+3. **Masukkan nama file input**, misalnya: input.txt
+4. Program akan membaca dan memvalidasi format input serta mencoba menyelesaikan puzzle.
+5. Jika solusi ditemukan, hasil akan ditampilkan di terminal dengan warna sesuai setiap blok.
+6. Program akan menanyakan apakah solusi ingin disimpan sebagai:
     Teks (.txt),
     Gambar (.png / .jpg)
-6. Masukkan nama file untuk menyimpan hasil, misalnya:
+7. Masukkan nama file untuk menyimpan hasil, misalnya:
     solution.txt untuk menyimpan sebagai teks,
     solution.png untuk menyimpan sebagai gambar
 
