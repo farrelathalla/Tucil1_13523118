@@ -129,7 +129,6 @@ public class IO {
 
                         char label = findLabel(currentLine);
                         if (currentLabel == null || label != currentLabel) {
-                            // New block detected
                             if (currentLabel != null) {
                                 blocks.add(new Block(currentLabel, currentBlock));
                                 blockUsed.put(currentLabel, true);
@@ -196,7 +195,6 @@ public class IO {
 
                     char label = findLabel(currentLine);
                     if (currentLabel == null || label != currentLabel) {
-                        // Blok baru
                         if (currentLabel != null) {
                             blocks.add(new Block(currentLabel, currentBlock));
                             blockUsed.put(currentLabel, true);
