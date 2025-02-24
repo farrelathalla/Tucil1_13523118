@@ -3,10 +3,7 @@ import java.io.*;
 import java.util.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.File;
+
 import java.util.List;
 
 public class IO {
@@ -246,7 +243,13 @@ public class IO {
     }
 
     public static void savePapanToTxt(char[][] board, String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        File outputDir = new File("output");
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+
+        File outputFile = new File(outputDir, filename);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
             for (char[] row : board) {
                 StringBuilder rowString = new StringBuilder();
                 for (char cell : row) {
@@ -304,9 +307,15 @@ public class IO {
         }
 
         g2d.dispose();
+        File outputDir = new File("output");
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+
+        File outputFile = new File(outputDir, filename);
 
         try {
-            ImageIO.write(image, "PNG", new File(filename));
+            ImageIO.write(image, "PNG", outputFile);
             System.out.println("Solusi " + filename + " berhasil tersimpan.");
         } catch (IOException e) {
             System.out.println("Gagal menyimpan gambar: " + e.getMessage());
